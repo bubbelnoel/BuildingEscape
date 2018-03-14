@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
+#include "DrawDebugHelpers.h"
 
 #define OUT
 
@@ -38,7 +39,14 @@ void UGrabberFix::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 	FRotator PlayerViewPointRotation;
 
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(OUT PlayerViewPointLocation, OUT PlayerViewPointRotation);
-	UE_LOG(LogTemp, Warning, TEXT("Sieg %s and %s"), PlayerViewPointLocation, PlayerViewPointRotation);
 
+	/*auto PlayerViewLocationString = PlayerViewPointLocation.ToString();
+	auto PlayerViewRotationString = PlayerViewPointRotation.ToString();
+
+	UE_LOG(LogTemp, Warning, TEXT("Location %s Position %s"), *PlayerViewLocationString, *PlayerViewRotationString);*/
+
+	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+
+	DrawDebugLine(GetWorld(), PlayerViewPointLocation, LineTraceEnd, FColor(255, 0, 0), false, 0.f, 50.f, 10.f);
 }
 
